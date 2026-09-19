@@ -16,7 +16,7 @@ Cada exercício foi feito em um repositório próprio, seguindo o passo a passo 
 | ia-1.3 | Agente de IA cria repositório e clona | [meu-segundo-repo](https://github.com/fabianamilhomem/meu-segundo-repo) | 1 commit |
 | ia-1.4 | Agente de IA cria arquivo, abre PR e faz merge | [meu-terceiro-repo](https://github.com/fabianamilhomem/meu-terceiro-repo) | [PR #1](https://github.com/fabianamilhomem/meu-terceiro-repo/pull/1) |
 
-## ia-1.1 Seu primeiro repositório
+## ia-1.1 Meu primeiro repositório
 
 Objetivo: exercitar `add`, `commit` e `push`.
 
