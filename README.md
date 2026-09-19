@@ -1,101 +1,118 @@
 # TrabalhosAgentesIA
 
-Repositório dos trabalhos da disciplina de **Agentes de IA** (Mestrado IDP).
-Este README documenta os exercícios práticos 1.1 a 1.4 (Git, GitHub CLI e agente de IA), realizados em 19/09/2026.
+Índice dos exercícios práticos 1.1 a 1.4 (Git, GitHub CLI e agente de IA) da disciplina de **Agentes de IA** (Mestrado IDP), realizados em 19/09/2026.
 
 **Autoria:** Fabiana Milhomem (`fabianamilhomem`)
-**Ferramentas:** Git 2.51.0, GitHub CLI (`gh`) 2.101.0 e Claude Code (agente de IA)
+**Ferramentas:** Git 2.51.0, GitHub CLI (`gh`) 2.101.0, Claude Code (agente de IA) e CLI `autograde` 0.9.0
+
+Cada exercício foi feito em um repositório próprio, seguindo o passo a passo do tutorial do professor. Todos foram validados e submetidos com `autograde validar ia-1.x`.
 
 ## Resumo
 
-| Exercício | Tema | Onde foi feito | Evidência |
-|-----------|------|----------------|-----------|
-| 1.1 | Primeiro repositório: add, commit e push | `git` (linha de comando) | commit `72f7f1a` |
-| 1.2 | Repositório com `gh`: branch, PR e merge | `gh` | [PR #1](https://github.com/fabianamilhomem/TrabalhosAgentesIA/pull/1) |
-| 1.3 | Agente de IA cria um repositório | Claude Code | [AgentesIA-ex1-3](https://github.com/fabianamilhomem/AgentesIA-ex1-3) |
-| 1.4 | PR e merge com assistente de IA | Claude Code | [PR #2](https://github.com/fabianamilhomem/TrabalhosAgentesIA/pull/2) |
+| Exercício | Tema | Repositório | Evidência |
+|-----------|------|-------------|-----------|
+| ia-1.1 | Primeiro repositório: add, commit e push | [meu-primeiro-repo](https://github.com/fabianamilhomem/meu-primeiro-repo) | 2 commits |
+| ia-1.2 | GitHub CLI: branch, PR e merge | [exercicio-12](https://github.com/fabianamilhomem/exercicio-12) | [PR #1](https://github.com/fabianamilhomem/exercicio-12/pull/1) |
+| ia-1.3 | Agente de IA cria repositório e clona | [meu-segundo-repo](https://github.com/fabianamilhomem/meu-segundo-repo) | 1 commit |
+| ia-1.4 | Agente de IA cria arquivo, abre PR e faz merge | [meu-terceiro-repo](https://github.com/fabianamilhomem/meu-terceiro-repo) | [PR #1](https://github.com/fabianamilhomem/meu-terceiro-repo/pull/1) |
 
-## 1.1 Primeiro repositório Git (add, commit e push)
+## ia-1.1 Seu primeiro repositório
 
-Objetivo: exercitar `add`, `commit` e `push` enviando um projeto ao GitHub.
+Objetivo: exercitar `add`, `commit` e `push`.
 
-O exercício foi feito no repositório inicial `AgentesIA` (https://github.com/fabianamilhomem/AgentesIA), que já estava criado e vazio. Os comandos foram executados como se o repositório estivesse sendo criado agora:
+Repositório público criado vazio (via `gh repo create meu-primeiro-repo --public`), clonado numa pasta vazia, com o `README.md` criado por `echo`, dois commits e push:
 
 ```bash
-git init -b main
+git clone https://github.com/fabianamilhomem/meu-primeiro-repo.git
+cd meu-primeiro-repo
+echo "# Meu Primeiro Repositorio" > README.md
+echo "" >> README.md
+echo "Repo do exercicio ia-1.1 da disciplina Agentes de IA." >> README.md
 git add README.md
-git commit -m "Primeiro commit: adiciona README"
-git remote add origin https://github.com/fabianamilhomem/AgentesIA.git
+git commit -m "feat: README inicial"
+echo "" >> README.md
+echo "## Sobre" >> README.md
+echo "Estudante da IA-2026-01." >> README.md
+git commit -am "docs: secao Sobre"
+git push origin main
+```
+
+## ia-1.2 GitHub CLI: branch, PR e merge
+
+Objetivo: usar o `gh` para criar o repositório, uma branch, um Pull Request e o merge.
+
+```bash
+gh repo create exercicio-12 --public --clone
+cd exercicio-12
+echo "# Exercicio ia-1.2" > README.md
+git add README.md
+git commit -m "feat: README inicial"
+git push origin main
+git checkout -b feat/algo
+echo "linha nova" >> README.md
+git commit -am "feat: adiciona linha"
+git push -u origin feat/algo
+gh pr create --title "feat: adiciona uma linha ao README" --body "Trabalho do exercicio ia-1.2"
+gh pr merge --squash --delete-branch
+```
+
+Observação: neste computador o Git criava a branch local como `master`, então o primeiro `git push origin main` falhou. A branch foi renomeada para `main` (`git branch -m master main`), e o Git passou a usar `init.defaultBranch main`. O restante seguiu o tutorial.
+
+## ia-1.3 Agente cria repositório e clona
+
+Objetivo: instruir um agente de codificação (Claude Code) a criar um repositório com o `gh` e cloná-lo. O agente foi aberto numa pasta vazia.
+
+Prompt dado ao agente:
+
+> Crie um repositório público no meu usuário GitHub chamado `meu-segundo-repo` usando `gh`, faça o clone local dentro desta pasta atual e adicione um README.
+
+Comandos executados pelo agente:
+
+```bash
+gh repo create meu-segundo-repo --public --clone
+cd meu-segundo-repo
+echo "# Meu Segundo Repositorio" > README.md
+git add README.md
+git commit -m "feat: README inicial"
 git push -u origin main
+gh repo view --json name,visibility
 ```
 
-O primeiro commit (`72f7f1a`) é o mesmo que aparece no histórico deste repositório. Só o `README.md` foi adicionado (`git add` explícito), e o restante da pasta ficou sem rastreamento.
+## ia-1.4 Agente cria arquivo, abre PR e faz merge
 
-## 1.2 Repositório com o GitHub CLI (`gh`): branch, PR e merge
+Objetivo: pedir ao agente o ciclo completo de uma contribuição, em duas etapas.
 
-Objetivo: usar o `gh` para criar o repositório e exercitar branch, Pull Request e merge.
+Prompt da etapa 1:
 
-1. Instalação do `gh` (`winget install --id GitHub.cli`) e login com `gh auth login --web`.
-2. Criação deste repositório, já enviando a branch `main`:
+> Crie um repositório público no GitHub chamado `meu-terceiro-repo`, clone-o, faça um commit inicial com README.md.
 
-   ```bash
-   gh repo create TrabalhosAgentesIA --public --source=. --remote=origin --push
-   ```
+Prompt da etapa 2:
 
-3. Branch, commit e PR:
+> Altere o diretorio de trabalho para o diretorio onde voce clonou o repositorio `meu-terceiro-repo` e crie uma branch nova, adicione um arquivo `CONTRIBUINDO.md` com um texto curto, abra um Pull Request com título descritivo e faça o merge na main.
 
-   ```bash
-   git switch -c feature/atualiza-readme
-   git add README.md
-   git commit -m "Adiciona lista de exercícios ao README"
-   git push -u origin feature/atualiza-readme
-   gh pr create --base main --head feature/atualiza-readme --title "Adiciona lista de exercícios ao README"
-   ```
-
-4. Merge e limpeza:
-
-   ```bash
-   gh pr merge 1 --merge --delete-branch
-   git switch main && git pull
-   ```
-
-Resultado: [PR #1](https://github.com/fabianamilhomem/TrabalhosAgentesIA/pull/1) mergeado, com a branch removida.
-
-## 1.3 Agente de IA cria um repositório
-
-Objetivo: interagir com um agente de IA para criar um repositório.
-
-Pedi ao Claude Code que criasse o repositório `AgentesIA-ex1-3`. O agente executou:
+Comandos executados pelo agente:
 
 ```bash
-gh repo create AgentesIA-ex1-3 --public --add-readme \
-  --description "Exercício 1.3: repositório criado por agente de IA (Claude Code)"
-git clone https://github.com/fabianamilhomem/AgentesIA-ex1-3.git
+# etapa 1
+gh repo create meu-terceiro-repo --public --clone
+cd meu-terceiro-repo
+echo "# Meu Terceiro Repositorio" > README.md
+git add README.md && git commit -m "feat: README inicial"
+git push -u origin main
+
+# etapa 2
+git checkout -b feat/contribuindo
+echo "# Como contribuir" > CONTRIBUINDO.md
+echo "Abra issues e PRs descritivos." >> CONTRIBUINDO.md
+git add CONTRIBUINDO.md && git commit -m "docs: guia de contribuicao"
+git push -u origin feat/contribuindo
+gh pr create --title "docs: adiciona guia de contribuicao" --body "Texto inicial sobre como contribuir."
+gh pr merge --squash --delete-branch
+gh pr list --state all
 ```
 
-Resultado: [AgentesIA-ex1-3](https://github.com/fabianamilhomem/AgentesIA-ex1-3), público, com README inicial e clonado localmente.
+Resultado: PR `docs: adiciona guia de contribuicao` mergeado, com a `main` contendo 2 commits.
 
-## 1.4 PR e merge com assistente de IA
+## Este repositório
 
-Objetivo: interagir com um agente de IA para conduzir um PR e o merge.
-
-Pedi ao Claude Code que fizesse o fluxo completo neste repositório. O agente criou a branch `feature/adiciona-gitignore`, adicionou um `.gitignore`, abriu o PR e fez o merge:
-
-```bash
-git switch -c feature/adiciona-gitignore
-git add .gitignore
-git commit -m "Adiciona .gitignore"
-git push -u origin feature/adiciona-gitignore
-gh pr create --base main --head feature/adiciona-gitignore --title "Adiciona .gitignore"
-gh pr merge 2 --merge --delete-branch
-```
-
-Resultado: [PR #2](https://github.com/fabianamilhomem/TrabalhosAgentesIA/pull/2) mergeado. Os commits feitos pelo agente trazem o trailer `Co-Authored-By`.
-
-## Histórico
-
-```
-*   Merge pull request #2 (feature/adiciona-gitignore)
-*   Merge pull request #1 (feature/atualiza-readme)
-*   72f7f1a Primeiro commit: adiciona README
-```
+Este repositório (`TrabalhosAgentesIA`) e os repositórios `AgentesIA` e `AgentesIA-ex1-3` vieram de uma primeira tentativa dos exercícios, feita antes de seguir o tutorial à risca. Os exercícios avaliados são os quatro repositórios listados acima.
